@@ -1,0 +1,26 @@
+
+
+.current-display {
+    display: flex;
+    flex-direction: column;
+}
+
+#question-1 {
+    flex-direction: column;
+}
+
+#question-2 {
+    flex-direction: column;
+}
+
+#question-3 {
+    flex-direction: column;
+}
+
+#question-4 {
+    flex-direction: column;
+}
+
+#question-5 {
+    flex-direction: column;
+}
