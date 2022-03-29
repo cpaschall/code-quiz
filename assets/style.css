@@ -1,11 +1,16 @@
 
 
 .current-display {
-    display: none;
+    display: flex;
     flex-direction: column;
 }
 
-#question-1 {
+.current-question {
+    display: flex;
+    flex-direction: column;
+}
+
+/* #question-1 {
     flex-direction: column;
 }
 
@@ -23,4 +28,4 @@
 
 #question-5 {
     flex-direction: column;
-}
+} */

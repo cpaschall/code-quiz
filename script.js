@@ -1,10 +1,18 @@
 
-
-
+var startQuiz = document.getElementById("start-quiz");
+var timeDisplay = document.getElementById("timer");
+var countDown = 180
 
 // GIVEN I am taking a code quiz
 // WHEN I click the start button
 // THEN a timer starts and I am presented with a question
+function quizTimer() {
+    var timeInterval = setInterval(function() {
+        countDown--;
+
+    })
+}
+
 // var time = document.querySelector("#time-clock");
 // var start = document.querySelector("#start-timer");
 // var stop = document.querySelector("#stop-timer");
@@ -85,43 +93,177 @@
 // var answerBtn = document.querySelector("#answer-btn");
 // var wrongBtn = document.querySelector(".wrong-btn");
 
+var startPage = $(".current-display")
+var questionList = $("#question-list")
+var currentQues = $(".current-question")
+var divEl = $("<div>")
+var h3El = $("<h3>")
+var buttonEL = $("<button>")
+var startBtn = $("#start-quiz")
+var answerBtn = $(".answer-btn")
+var answer1 = $("<button>")
+var answer2 = $("<button>")
+var answer3 = $("<button>")
+var answer4 = $("<button>")
 
-// var q1 = {
-//     question: "Test Question1",
-//     wrongAns1 : "wrong 1",
-//     wrongAns2 : "wrong 2",
-//     wrongAns3 : "wrong 3",
-//     rightAns : "right",
-// }; 
-// var q2 = {
-//     question: "Test Question2",
-//     wrongAns1 : "wrong 1",
-//     wrongAns2 : "wrong 2",
-//     wrongAns3 : "wrong 3",
-//     rightAns : "right",
-// }; 
-// var q3 = {
-//     question: "Test Question3",
-//     wrongAns1 : "wrong 1",
-//     wrongAns2 : "wrong 2",
-//     wrongAns3 : "wrong 3",
-//     rightAns : "right",
-// }; 
-// var q4 = {
-//     question: "Test Question4",
-//     wrongAns1 : "wrong 1",
-//     wrongAns2 : "wrong 2",
-//     wrongAns3 : "wrong 3",
-//     rightAns : "right",
-// }; 
-// var q5 = {
-//     question: "Test Question5",
-//     wrongAns1 : "wrong 1",
-//     wrongAns2 : "wrong 2",
-//     wrongAns3 : "wrong 3",
-//     rightAns : "right",
-// }; 
+var q1 = {
+    question : "Test answer1",
+    answer1 : "wrong 1",
+    answer2 : "right",
+    answer3 : "wrong 2",
+    answer4 : "wrong 3",
+}; 
+var q2 = {
+    question : "Test answer2",
+    answer1 : "wrong 1",
+    answer2 : "wrong 2",
+    answer3 : "wrong 3",
+    answer4 : "right",
+}; 
+var q3 = {
+    question : "Test answer3",
+    answer1 : "right",
+    answer2 : "wrong 1",
+    answer3 : "wrong 2",
+    answer4 : "wrong 3",
+}; 
+var q4 = {
+    question : "Test answer4",
+    answer1 : "wrong 1",
+    answer2 : "wrong 2",
+    answer3 : "right",
+    answer4 : "wrong 3",
+}; 
+var q5 = {
+    question : "Test Question5",
+    answer1 : "wrong 1",
+    answer2 : "wrong 2",
+    answer3 : "wrong 3",
+    answer4 : "right",
+}; 
 
+// q1.attr("id", "question-1")
+// q2.attr("id", "question-2")
+// q3.attr("id", "question-3")
+// q4.attr("id", "question-4")
+// q5.attr("id", "question-5")
+
+
+function homePage() {
+    startPage.css("display", "flex");
+    questionList.css("display", "none");
+    startBtn.on("click", nextQues);
+}
+
+homePage()
+
+
+function checkAnswer(event) {
+    console.log("check answer function");
+    event.preventDefault();
+    // for(i=0; i<allAnswers.length; i++) {
+    if($("#question-1")){
+        if(event.currentTarget === q1.answer2) {
+            console.log("Correct");
+        } else if(event.target != q1.answer2){
+            console.log("Wrong");
+        }
+    } else if(question === q2){
+        if(event.currentTarget === q2.answer4) {
+            console.log("Correct");
+        } else if(event.currentTarget != q1.answer4){
+            console.log("Wrong");
+        }
+    }
+    // } 
+}
+
+// // works!
+
+function nextQues(event) {
+    event.preventDefault();
+    if (startPage) {
+        createQuestion(q1);
+        answerBtn.on("click", answerMsg(q1));  
+    } else if ($("#answer-1")) {
+        createQuestion(q2)
+    }
+
+}
+
+
+
+
+function createQuestion(question) {
+    console.log("Create Question func working");
+    startPage.css("display", "none");
+    console.log("What's next?");
+    divEl.attr("class", "current-question");
+    if (question === q1) {
+        divEl.attr("id", "question-1");
+    } else if (question === q2) {
+        divEl.attr("id", "question-2");;
+    } else if (question === q3) {
+        divEl.attr("id", "question-3");;
+    }else if (question === q4) {
+        divEl.attr("id", "question-4");;
+    } else if (question === q5) {
+        divEl.attr("id", "question-5");;
+    } else {
+        return
+    }
+    questionList.append(divEl);
+    h3El.text(question.question);
+    divEl.append(h3El);
+    answer1.text(question.answer1);
+    answer1.attr({class:"answer-btn", id:"answer-1"});
+    divEl.append(answer1);
+    answer2.text(question.answer2);
+    answer2.attr({class:"answer-btn", id:"answer-2"});
+    divEl.append(answer2);
+    answer3.text(question.answer3);
+    answer3.attr({class:"answer-btn", id:"answer-3"});
+    divEl.append(answer3);
+    answer4.text(question.answer4);
+    answer4.attr({class:"answer-btn", id:"answer-4"});
+    divEl.append(answer4);
+    questionList.css("display", "flex");
+};
+
+function answerMsg(question) {
+    // for(i=1; i<5; i++) {
+    //     q1.children[i].addEventListener("click", function(event) {
+    //         if(event.currentTarget == document.getElementById("correct-answer")) {
+    //             console.log("correct answer");
+    //             return;
+    //         }else{
+    //             console.log("wrong answer");
+    //             return;
+    //         }
+    //     })
+    var allAnswers = [question.answer1, question.answer2, question.answer3, question.answer4];
+    for(i = 0; i < allAnswers.length; i++) {
+        allAnswers[i].addEventListener("click", function(event) {
+            if (question === q1) {
+                event.preventDefault();
+                if(event.currentTarget == q1.answer2) {
+                    console.log("correct answer");
+                }else{
+                    console.log("wrong answer");
+                }
+            }
+            
+        })
+    }
+    
+}
+/* <div class="current-display" id="answer-1">
+<h3>test 1</h3>
+<button class="answer-btn">Wrong</button>
+<button class="answer-btn">Wrong</button>
+<button class="answer-btn" id="correct-answer">Right</button>
+<button class="answer-btn">Wrong</button>
+</div> */
 // var questions = [q1, q2, q3, q4, q5];
 
 
@@ -221,22 +363,67 @@
 //     getSection[1].children[0].style.display = "flex";
 // }
 
-q1 = document.getElementById("question-1");
-q2 = document.getElementById("question-2");
-q3 = document.getElementById("question-3");
-q4 = document.getElementById("question-4");
-q5 = document.getElementById("question-5");
+// q1 = document.getElementById("answer-1");
+// q2 = document.getElementById("answer-2");
+// q3 = document.getElementById("answer-3");
+// q4 = document.getElementById("answer-4");
+// q5 = document.getElementById("question-5");
+// var allSections = document.querySelectorAll(".current-display")
+// var allQuestions = document.querySelectorAll(".answer-btn")
 
-// works!
-for(i=1; i<5; i++) {
-    q2.children[i].addEventListener("click", function(event) {
-        if(event.currentTarget == document.getElementById("correct-answer")) {
-            console.log("correct answer")
-        }else{
-            console.log("wrong answer")
-        }
-    })
-}
+
+// // works!
+// function answerMsg() {
+//     // for(i=1; i<5; i++) {
+//     //     q1.children[i].addEventListener("click", function(event) {
+//     //         if(event.currentTarget == document.getElementById("correct-answer")) {
+//     //             console.log("correct answer");
+//     //             return;
+//     //         }else{
+//     //             console.log("wrong answer");
+//     //             return;
+//     //         }
+//     //     })
+//     for(i = 0; i < allQuestions.length; i++) {
+//         allQuestions[i].addEventListener("click", function(event) {
+//             if(event.currentTarget == document.getElementById("correct-answer")) {
+//                 console.log("correct answer");
+//                 nextQuestion()
+//             }else{
+//                 console.log("wrong answer");
+//             }
+//         })
+//     }
+    
+// }
+    
+// // var sec = seconds % 60 < 10 ? "0" + seconds % 60 : seconds % 60;
+// function nextQuestion() {
+//     for(i=1; i < allSections.length; i++) {
+//         allSections[i].setAttribute("style", "display: none;");
+//     }
+// }
+
+
+// function selectAnswer() {
+//     for(i=1; i < allSections.length; i++) {
+//         allSections[i].setAttribute("style", "display: flex;");
+//         answerMsg();
+//         nextQuestion();
+//         // allSections[i].setAttribute("style", "display: none;");
+//     }
+// }
+
+
+// // function showDisplay(event) {
+// //     // event.stopPropagation();
+// //     event.currentTarget.setAttribute("style","display: flex")
+// // };
+
+// // function hideDisplay(event) {
+// //     // event.stopPropagation();
+// //     event.currentTarget.setAttribute("style","display: none")
+// };
 
 // 2. create a nav-bar with highscores on the left, timer on the right.  This can be done in html file directly
 
