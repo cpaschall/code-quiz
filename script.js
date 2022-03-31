@@ -13,6 +13,7 @@ function quizTimer() {
     })
 }
 
+startQuiz.addEventListener("click", quizTimer)
 // var time = document.querySelector("#time-clock");
 // var start = document.querySelector("#start-timer");
 // var stop = document.querySelector("#stop-timer");
@@ -99,8 +100,9 @@ var currentQues = $(".current-question")
 var divEl = $("<div>")
 var h3El = $("<h3>")
 var buttonEL = $("<button>")
+var allBtns = document.querySelectorAll(".answer-btn");
 var startBtn = $("#start-quiz")
-var answerBtn = $(".answer-btn")
+// var answerBtn = $(".answer-btn")
 var answer1 = $("<button>")
 var answer2 = $("<button>")
 var answer3 = $("<button>")
@@ -159,32 +161,36 @@ homePage()
 
 
 function checkAnswer(event) {
-    console.log("check answer function");
-    event.preventDefault();
-    // for(i=0; i<allAnswers.length; i++) {
-    if($("#question-1")){
-        if(event.currentTarget === q1.answer2) {
-            console.log("Correct");
-        } else if(event.target != q1.answer2){
-            console.log("Wrong");
-        }
-    } else if(question === q2){
-        if(event.currentTarget === q2.answer4) {
-            console.log("Correct");
-        } else if(event.currentTarget != q1.answer4){
-            console.log("Wrong");
-        }
-    }
-    // } 
+    // event.preventDefault();
+    // console.log(event);
+    // console.log("check answer function");
+    // for(i = 0; i <5; i++) {
+    //     if(event.currentTarget == q1.answer2) {
+    //         event.preventDefault();
+    //         console.log("correct answer");
+    //     }else{
+    //         event.preventDefault();
+    //         console.log("wrong answer");
+    //     }
+    // }
 }
 
+// allBtns.on("click", checkAnswer)   
+//     event.preventDefault();
+//     if(event.currentTarget == q1.answer2) {
+//         console.log("correct answer");
+//     }else{
+//         console.log("wrong answer");
+//     }
+// })
 // // works!
 
 function nextQues(event) {
     event.preventDefault();
     if (startPage) {
         createQuestion(q1);
-        answerBtn.on("click", answerMsg(q1));  
+        // allBtns.on("click", checkAnswer);
+        // answerBtn.on("click", answerMsg(q1));  
     } else if ($("#answer-1")) {
         createQuestion(q2)
     }
@@ -229,6 +235,8 @@ function createQuestion(question) {
     divEl.append(answer4);
     questionList.css("display", "flex");
 };
+
+// var allBtns = document.querySelectorAll(".answer-btn");
 
 function answerMsg(question) {
     // for(i=1; i<5; i++) {

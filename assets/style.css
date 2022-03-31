@@ -1,7 +1,7 @@
 
 
 .current-display {
-    display: flex;
+    display: none;
     flex-direction: column;
 }
 
@@ -10,7 +10,11 @@
     flex-direction: column;
 }
 
-/* #question-1 {
+#start-page {
+    flex-direction: column;
+}
+
+#question-1 {
     flex-direction: column;
 }
 
@@ -28,4 +32,8 @@
 
 #question-5 {
     flex-direction: column;
-} */
+}
+
+#log-score {
+    flex-direction: column;
+}
