@@ -6,7 +6,7 @@
 // WHEN I click the start button
 // THEN a timer starts and I am presented with a question
 
-var timer = $("#timer")
+var timer = $("#timer");
 var startPage = $("#start-page");
 var startBtn = $("#start-quiz");
 var question1 = $("#question-1");
@@ -15,13 +15,16 @@ var question3 = $("#question-3");
 var question4 = $("#question-4");
 var question5 = $("#question-5");
 var logScore = $("#log-score");
+var scoreDisplay = $("#quiz-score")
 var answrBtns = $(".answer-btn");
-var rightAnswer = $(".correct-answer")
-var checkAnswer = $(".check-answer")
-var currentPage = "start";
+var rightAnswer = $(".correct-answer");
+var checkAnswer = $(".check-answer");
+var currentPage = $("start");
 
-seconds = 180;
-timerInterval = 0;
+
+var seconds = 180;
+var timerInterval = 0;
+var finalScore = 0
 
 startPage.css("display", "flex");
 
@@ -82,6 +85,7 @@ function correctAnswer(currentAnswer, callBack) {
     if (currentAnswer.classList.contains("correct-answer")) {
         console.log("correct answer");
         checkAnswer.text("Correct Answer");
+        finalScore++;
         // setTimeout(resetAnswer, 2000);
 
     }else{
@@ -130,10 +134,15 @@ function nextQuestion (event) {
             question5.css("display", "flex");
         });
     } else if(currentPage === "question5") {
-        currentPage = "high-score";
+        currentPage = "log-score";
         correctAnswer(currentAnswer, function(){
             question5.css("display", "none");
             logScore.css("display", "flex");
+            // scoreDisplay.textContent = "Final Score: " + finalScore;
+            scoreDisplay.text(`Final Score: ${finalScore}`);
+            console.log(finalScore);
+            // logScore.append(scoreDisplay);
+            // console.log(scoreDisplay);
             clearInterval(timerInterval);
             // seconds = 0;
             // renderTimer();
@@ -146,14 +155,133 @@ for(var i = 0; i < answrBtns.length; i++) {
 };
 
 
-
+function logScore(event) {
+    event.preventDefault();
+    var initials = event.target;
+    if(currentPage === "log-score");
+}
 
 
 // WHEN all questions are answered or the timer reaches 0
 // THEN the game is over
-if(seconds === 0 || (currentPage === "high-score")) {
+if(seconds === 0 || (currentPage === "log-score")) {
     console.log("Game over")
 }
 
+
+
 // WHEN the game is over
 // THEN I can save my initials and my score
+
+// var todoInput = document.querySelector("#todo-text");
+var user = document.querySelector("#usr-init");
+// var button = document.createElement("button");
+var subScoreBtn = document.querySelector("#submit-score");
+// var todoForm = document.querySelector("#todo-form");
+var scoreForm = document.querySelector("#score-form");
+var highScores = $("#high-scores");
+// var todoList = document.querySelector("#todo-list");
+var showScores = document.querySelector("#show-scores")
+// var initials = document.querySelector("#initials"); chenged value
+// var todoCountSpan = document.querySelector("#todo-count");
+var totEntry = document.querySelector("#total-entries")
+
+
+var allScores = [];
+
+function renderHighScore() {
+    currentPage = "end-game";
+    logScore.css("display", "none");
+    highScores.css("display", "flex");
+
+    showScores.innerHTML = "";
+    totEntry.textContent = allScores.length;
+
+    for (var i = 0; i < allScores.length; i++) {
+        var score = allScores[i];
+        var liEl = document.createElement("li");
+        liEl.textContent = score[0] + ": " + score[1];
+        liEl.setAttribute("class", "score-list");
+        showScores.appendChild(liEl)
+       
+
+    }
+}
+
+function initDisplay() {
+    // currentPage = "end-game";
+    // logScore.css("display", "none");
+    // highScores.css("display", "flex");
+
+    var highScores = JSON.parse(localStorage.getItem("allScores"));
+
+    if (highScores !== null) {
+        allScores = highScores;
+    }
+
+    renderHighScore();
+}
+
+function storedScores() {
+    localStorage.setItem("allScores", JSON.stringify(allScores))
+}
+
+subScoreBtn.addEventListener("click", function(event) {
+    event.preventDefault();
+    
+})
+    
+    // liEl.setAttribute("class", "highscore-list");
+    // liEl.textContent = highScore.initials + " : " + highScore.score;
+//     allScores += [highScore.initials, highScore.score];
+//     console.log(scoreArray);
+//     showScores.append(liEl);
+    
+//     console.log(highScore);
+//     console.log(highScore.initials);
+    
+//     console.log(liEl)
+    
+
+// }
+
+subScoreBtn.addEventListener("click", function(event){
+    event.preventDefault();
+
+    var highScore = {
+        initials: user.value,
+        score: finalScore,
+    };
+    
+    if (user === "") {
+        return;
+    }
+
+    allScores.push([highScore.initials, highScore.score]);
+    user.value="";
+
+    
+    storedScores();
+    renderHighScore();
+    // initDisplay();
+    
+
+    // localStorage.setItem("scoreList", JSON.stringify(highScore));
+    // renderHighScore();
+
+})
+
+
+subScoreBtn.addEventListener("click", initDisplay());
+
+// var initials = $("enter-initials")
+
+// function saveHighScore() {
+    
+//     var highScore = {
+//         user: initials.value,
+//         score: finalScore.value,
+//     }
+// }
+// var scoreArray = [];
+

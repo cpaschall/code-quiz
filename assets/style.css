@@ -37,3 +37,7 @@
 #log-score {
     flex-direction: column;
 }
+
+#end-game {
+    flex-direction: column;
+}
