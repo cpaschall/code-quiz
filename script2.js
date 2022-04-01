@@ -164,9 +164,12 @@ function logScore(event) {
 
 // WHEN all questions are answered or the timer reaches 0
 // THEN the game is over
-if(seconds === 0 || (currentPage === "log-score")) {
-    console.log("Game over")
+function endQuiz() {
+    if(seconds === 0 || (currentPage === "log-score")) {
+        console.log("Game over")
+    }
 }
+
 
 
 
@@ -190,9 +193,9 @@ var totEntry = document.querySelector("#total-entries")
 var allScores = [];
 
 function renderHighScore() {
-    currentPage = "end-game";
-    logScore.css("display", "none");
-    highScores.css("display", "flex");
+    // currentPage = "end-game";
+    // logScore.css("display", "none");
+    // highScores.css("display", "flex");
 
     showScores.innerHTML = "";
     totEntry.textContent = allScores.length;
@@ -226,10 +229,10 @@ function storedScores() {
     localStorage.setItem("allScores", JSON.stringify(allScores))
 }
 
-subScoreBtn.addEventListener("click", function(event) {
-    event.preventDefault();
+// subScoreBtn.addEventListener("click", function(event) {
+//     event.preventDefault();
     
-})
+// })
     
     // liEl.setAttribute("class", "highscore-list");
     // liEl.textContent = highScore.initials + " : " + highScore.score;
@@ -247,6 +250,10 @@ subScoreBtn.addEventListener("click", function(event) {
 
 subScoreBtn.addEventListener("click", function(event){
     event.preventDefault();
+
+    currentPage = "end-game";
+    logScore.css("display", "none");
+    highScores.css("display", "flex");
 
     var highScore = {
         initials: user.value,
@@ -272,7 +279,9 @@ subScoreBtn.addEventListener("click", function(event){
 })
 
 
-subScoreBtn.addEventListener("click", initDisplay());
+// subScoreBtn.addEventListener("click", initDisplay);
+
+initDisplay();
 
 // var initials = $("enter-initials")
 
