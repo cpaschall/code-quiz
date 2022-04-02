@@ -1,448 +1,373 @@
-
-var startQuiz = document.getElementById("start-quiz");
-var timeDisplay = document.getElementById("timer");
-var countDown = 180
-
 // GIVEN I am taking a code quiz
 // WHEN I click the start button
 // THEN a timer starts and I am presented with a question
-function quizTimer() {
-    var timeInterval = setInterval(function() {
-        countDown--;
 
-    })
+var timer = $("#timer");
+var startPage = $("#start-page");
+var startBtn = $("#start-quiz");
+var question1 = $("#question-1");
+var question2 = $("#question-2");
+var question3 = $("#question-3");
+var question4 = $("#question-4");
+var question5 = $("#question-5");
+var questionList = $("question-list");
+var logScore = $("#log-score");
+var scoreDisplay = $("#quiz-score")
+var answrBtns = $(".answer-btn");
+var rightAnswer = $(".correct-answer");
+var checkAnswer = $(".check-answer");
+var currDisplay = $(".current-display")
+var currentPage = "start";
+var anchorEl = $("a")
+var user = document.querySelector("#usr-init");
+var subScoreBtn = document.querySelector("#submit-score");
+var scoreForm = document.querySelector("#score-form");
+var highScores = $("#high-scores");
+var showScores = document.querySelector("#show-scores")
+
+
+var seconds = 10;
+var timerInterval = 0;
+var finalScore = 0
+
+var allDisplays = [startPage, question1, question2, question3, question4, question5, logScore, highScores];
+var questionPage = ["question1", "question2", "question3", "question4", "question5"];
+var questionNum = [question1, question2, question3, question4, question5]
+
+function hideAllDisplay() {
+    for(var i=0; i < allDisplays.length; i++) {
+        allDisplays[i].css("display", "none")
+    }
+    // startPage.css("display", "none");
+    // logScore.css("display", "none");
+    // question1.css("display", "none");
+    // question2.css("display", "none");
+    // question3.css("display", "none");
+    // question4.css("display", "none");
+    // question5.css("display", "none");
+    highScores.css("display", "flex")
 }
 
-startQuiz.addEventListener("click", quizTimer)
-// var time = document.querySelector("#time-clock");
-// var start = document.querySelector("#start-timer");
-// var stop = document.querySelector("#stop-timer");
-
-// var seconds = 120;
-// var timerInterval = 120;
 
 
+startPage.css("display", "flex");
 
+// checks to see if currently on start page when button is clicked and if it is, changes start page display to none
+// and changes the Question #1 page display from "none" to "flex"
+function renderTimer() {
+    var sec = seconds % 60 < 10 ? "0" + seconds % 60 : seconds % 60;
+    var min = Math.floor(seconds / 60);
+    timer.text(`${min}:${sec}`);
+    if(seconds <= 0 || typeof seconds !== 'number') {
+        timer.text("0:00");
+        clearInterval(timerInterval);
+    }
+}
 
+function startTimer() {
+    clearInterval(timerInterval);
+    timerInterval = setInterval(function() {
+        --seconds;
+        renderTimer()
+    if(seconds <= 0){
+        alert("Time is up!");
+        // for(var i=0; i < allDisplays.length; i++) {
+        //     console.log("time's up!")
+        //     allDisplays[i].css("display", "none")
+        // }
+        currentPage = "log-score";
+        // if(currentPage !== "log-score") {
+        for(var i=0; i < allDisplays.length; i++) {
+            console.log("time's up!")
+            allDisplays[i].css("display", "none");
+        }
+        // }
+        logScore.css("display", "flex");  
+    }
+    }, 1000)
+}
 
-// var answeredQuestions = [];
+function checkCurrPage(){
+    
+    if (seconds <= 0){
+        for(var i = 0; i < questionPage.length; i++){
+            if(questionPage[i] === currentPage) {
+                currentPage = "log-score";
+                questionNum[i].css("display", "none");
+                logScore.css("display", "flex");
+            }
+        }
+    }
+}
 
-// function timeDisplay() {
-//     var sec = seconds % 60 < 10 ? "0" + seconds % 60 : seconds % 60;
-//     var min = Math.floor(seconds/60);
-//     time.textContent = `${min}:${sec}`;
-
+// checkCurrPage();
+// function hideQuestion() {
+//     var questionPage = ["question1", "question2", "question3", "question4", "question5"];
+//     var questionNum = [question1, question2, question3, question4, question5];
+//     if (seconds <= 0) {
+//         clearInterval(timerInterval);
+//         timer.text("0:00");
+//         for(var i = 0; i < questionPage.length; i++){
+//             if(questionPage[i] === currentPage) {
+//                 currentPage = "log-score";
+//                 questionNum[i].css("display", "none");
+//                 logScore.css("display", "flex");
+//             }
+//         }
+//     }
+    
 // }
+
+// startBtn.on("click", function(event) {
+//     event.preventDefault();
+//     var currBtn = event.target;
+//     console.log(currBtn);
+//     if (currentPage === "start") {
+//         currentPage = "question1";
+//         startPage.css("display", "none");
+//         startTimer();
+//         question1.css("display", "flex");
+//     } else{
+//         currentPage = "start";
+//         startPage.css("display", "flex")
+//     }
+// })
+
+function correctAnswer(currentAnswer, callBack) {
+    if (currentAnswer.classList.contains("correct-answer")) {
+        console.log("correct answer");
+        checkAnswer.text("Correct Answer");
+        finalScore++;
+    }else{
+        checkAnswer.text("Wrong answer");
+        seconds -= 5;
+    }
+    setTimeout(function() {
+        checkAnswer.text("");
+        callBack()
+    }, 1000);
+}
+
+// Function check the current value of "currentAnswer" then changes the display of the current page to none
+// and displays the next page after a button click
+
+// function nextQuestion (event) {
+//     event.preventDefault();
+//     var currentAnswer = event.target;
+//     console.log(currentAnswer);
+//     var questionPage = ["question1", "question2", "question3", "question4", "question5"];
+//     var questionNum = [question1, question2, question3, question4, question5];
+//     for(var i = 0; i < questionPage.length; i++){
+//         if(seconds <= 0) {
+//             clearInterval(timerInterval);
+//             logScore.css("display", "flex");
+//             currentPage = "log-score";
+//             questionNum[i].css("display", "none");
+//             logScore.css("display", "flex");
+//             alert("Time Ran Out!");
+//             // if(questionPage[i] === currentPage) {
+//             questionNum[i].css("display", "none");
+//             // logScore.css("display", "flex");
+//             alert("Time Ran Out!")
+//         //     }
+//         //     // } 
+//         } else {
+//             event.preventDefault();
+//             currentPage = questionPage[i];
+//             correctAnswer(currentAnswer, function() {
+//                 questionNum[i].css("display", "none");
+//                 questionNum[i+1].css("display", "flex");
+//             });
+//         }   
+//     }
+// }
+
+function nextQuestion(event) {
+    event.preventDefault();
+    var currentAnswer = event.target;
+    console.log(currentAnswer);
+    if(currentPage === "question1") {
+       
+        currentPage = "question2";
+        correctAnswer(currentAnswer, function() {
+            question1.css("display", "none");
+            question2.css("display", "flex");
+        });
+        
+        // if (seconds <= 0){
+        //     timer.text("0:00");
+        //     clearInterval(timerInterval);
+        //     question1.css("display", "none");
+        //     logScore.css("display", "flex");
+        // }
+    } else if(currentPage === "question2") {
+        
+        currentPage = "question3";
+        
+        correctAnswer(currentAnswer, function(){
+            question2.css("display", "none");
+            question3.css("display", "flex");
+        })
+        
+
+    } else if(currentPage === "question3") {
+        
+        currentPage = "question4";
+        
+        correctAnswer(currentAnswer, function(){
+            question3.css("display", "none");
+            question4.css("display", "flex");
+        })
+        
+    } else if(currentPage === "question4") {
+
+        currentPage = "question5";
+        
+        correctAnswer(currentAnswer, function(){
+            question4.css("display", "none");
+            question5.css("display", "flex");
+        })
+    } else if(currentPage === "question5") {
+
+        currentPage = "log-score";
+        
+        correctAnswer(currentAnswer, function(){
+            question5.css("display", "none");
+            logScore.css("display", "flex");
+            scoreDisplay.text(`Final Score: ${finalScore}`);
+            console.log(finalScore);
+            clearInterval(timerInterval);
+        });
+
+    // } else {
+
+    }
+};
+
+for(var i = 0; i < answrBtns.length; i++) {
+    answrBtns[i].addEventListener("click", nextQuestion)
+};
+
+// WHEN the game is over
+// THEN I can save my initials and my score
+
+
+
+var allScores = [];
+
+function renderHighScore() {
+    showScores.style.display = "flex";
+    showScores.innerHTML = "";
+    for (var i = 0; i < allScores.length; i++) {
+        var score = allScores[i];
+        var liEl = document.createElement("li");
+        liEl.textContent = score[0] + ": " + score[1];
+        liEl.setAttribute("class", "score-list");
+        showScores.appendChild(liEl)
+    }
+}
+
+function initDisplay() {
+    var highScores = JSON.parse(localStorage.getItem("allScores"));
+    if (highScores !== null) {
+        allScores = highScores;
+    }
+    renderHighScore();
+}
+
+function storedScores() {
+    localStorage.setItem("allScores", JSON.stringify(allScores))
+}
+
+subScoreBtn.addEventListener("click", function(event){
+    event.preventDefault();
+
+    currentPage = "end-game";
+    logScore.css("display", "none");
+    highScores.css("display", "flex");
+    showScores.style.display = "flex";
+
+    var highScore = {
+        initials: user.value,
+        score: finalScore,
+    };
+    
+    if (user === "") {
+        return;
+    }
+
+    allScores.push([highScore.initials, highScore.score]);
+    user.value="";
+  
+    storedScores();
+    renderHighScore();
+})
+
+initDisplay();
+
+var restartQuizBtn = document.getElementById("restart-quiz");
+var clearScoreBtn = document.getElementById("clear-scores");
+
+restartQuizBtn.addEventListener("click", function() {
+    currentPage = "start"; 
+
+    var questionPage = ["question1", "question2", "question3", "question4", "question5"];
+    var questionNum = [question1, question2, question3, question4, question5];
+        for(var i = 0; i < questionPage.length; i++){
+            if(questionPage[i] === currentPage) {
+                questionNum[i].css("display", "none");
+            }
+        }
+    highScores.css("display", "none");
+    startPage.css("display", "flex");
+    seconds = 10;
+    finalScore = 0;
+});
+
+clearScoreBtn.addEventListener("click", function(){
+    localStorage.removeItem("allScores");
+    allScores = [];
+    showScores.style.display = "none";
+});
+
+// anchorEl.on("click", function(){
+//     for(var i=0; i < allDisplays.length; i++) {
+//         allDisplays[i].css("display", "none")
+//     }
+//     highScores.css("display", "flex")
+// })
+
+// anchorEl.on("click", hideAllDisplay)
+
+startBtn.on("click", function(event) {
+    event.preventDefault();
+    var currBtn = event.target;
+    console.log(currBtn);
+    if (currentPage === "start") {
+        currentPage = "question1";
+        startPage.css("display", "none");
+        startTimer();
+        question1.css("display", "flex");
+    } else{
+        currentPage = "start";
+        startPage.css("display", "flex")
+    }
+})
 
 // function startTimer() {
 //     clearInterval(timerInterval);
 //     timerInterval = setInterval(function() {
 //         --seconds;
-//         timeDisplay();
-//         if(seconds === 0) {
-//             clearInterval(timerInterval);
+//         renderTimer()
+//     if(seconds <= 0){
+//         alert("Time is up!");
+//         for(var i=0; i < allDisplays.length; i++) {
+//             console.log("time's up!")
+//             allDisplays[i].css("display", "none")
 //         }
-//     }, 1000);
-
-// }
-
-// function stopTimer() {
-//     clearInterval(timerInterval);
-// }
-
-// function startTest() {
-//     start.addEventListener("click", function(event) {
-//         startTimer()
-//     });
-// }
-
-// stop.addEventListener("click", function(event) {
-//     stopTimer()
-// })
-
-// WHEN I answer a question
-// THEN I am presented with another question
-// WHEN I answer a question incorrectly
-// THEN time is subtracted from the clock
-// WHEN all questions are answered or the timer reaches 0
-// THEN the game is over
-// WHEN the game is over
-// THEN I can save my initials and my score
-
-// 1. Create all pages in javascript then append to html file.  Each question/start pg/high-score has to take up the same space
-//     - possible I can create each question in html, all under a single div so it takes up the same space.  Then give each question an id and switch display for each id to "none" then use javascript to change the display attribut so only that question shows when it's time.
-// var buttonEl = document.querySelector(".answerBtn");
-// var displayEl = document.querySelector(".current-display");
-// var getSection = document.querySelectorAll("section");
-// var answerConfirm = document.createElement("p");
-// var createBtnAnswer = document.createElement("button");
-// var createBtnWrong1 = document.createElement("button");
-// var createBtnWrong2 = document.createElement("button");
-// var createBtnWrong3 = document.createElement("button");
-// createBtnAnswer.setAttribute("id", "answer-btn");
-// createBtnWrong1.setAttribute("class", "wrong-btn");
-// createBtnWrong2.setAttribute("class", "wrong-btn");
-// createBtnWrong3.setAttribute("class", "wrong-btn");
-// var allBtns = document.querySelectorAll("button");
-// var createH2 = document.createElement("h2");
-// var startPage = document.querySelector("#start-page")
-// var startQuiz = document.querySelector("#start-quiz")
-// var answerBtn = document.querySelector("#answer-btn");
-// var wrongBtn = document.querySelector(".wrong-btn");
-
-
-// var answerBtn = document.querySelector("#answer-btn");
-// var wrongBtn = document.querySelector(".wrong-btn");
-
-var startPage = $(".current-display")
-var questionList = $("#question-list")
-var currentQues = $(".current-question")
-var divEl = $("<div>")
-var h3El = $("<h3>")
-var buttonEL = $("<button>")
-var allBtns = document.querySelectorAll(".answer-btn");
-var startBtn = $("#start-quiz")
-// var answerBtn = $(".answer-btn")
-var answer1 = $("<button>")
-var answer2 = $("<button>")
-var answer3 = $("<button>")
-var answer4 = $("<button>")
-
-var q1 = {
-    question : "Test answer1",
-    answer1 : "wrong 1",
-    answer2 : "right",
-    answer3 : "wrong 2",
-    answer4 : "wrong 3",
-}; 
-var q2 = {
-    question : "Test answer2",
-    answer1 : "wrong 1",
-    answer2 : "wrong 2",
-    answer3 : "wrong 3",
-    answer4 : "right",
-}; 
-var q3 = {
-    question : "Test answer3",
-    answer1 : "right",
-    answer2 : "wrong 1",
-    answer3 : "wrong 2",
-    answer4 : "wrong 3",
-}; 
-var q4 = {
-    question : "Test answer4",
-    answer1 : "wrong 1",
-    answer2 : "wrong 2",
-    answer3 : "right",
-    answer4 : "wrong 3",
-}; 
-var q5 = {
-    question : "Test Question5",
-    answer1 : "wrong 1",
-    answer2 : "wrong 2",
-    answer3 : "wrong 3",
-    answer4 : "right",
-}; 
-
-// q1.attr("id", "question-1")
-// q2.attr("id", "question-2")
-// q3.attr("id", "question-3")
-// q4.attr("id", "question-4")
-// q5.attr("id", "question-5")
-
-
-function homePage() {
-    startPage.css("display", "flex");
-    questionList.css("display", "none");
-    startBtn.on("click", nextQues);
-}
-
-homePage()
-
-
-function checkAnswer(event) {
-    // event.preventDefault();
-    // console.log(event);
-    // console.log("check answer function");
-    // for(i = 0; i <5; i++) {
-    //     if(event.currentTarget == q1.answer2) {
-    //         event.preventDefault();
-    //         console.log("correct answer");
-    //     }else{
-    //         event.preventDefault();
-    //         console.log("wrong answer");
-    //     }
-    // }
-}
-
-// allBtns.on("click", checkAnswer)   
-//     event.preventDefault();
-//     if(event.currentTarget == q1.answer2) {
-//         console.log("correct answer");
-//     }else{
-//         console.log("wrong answer");
+//         logScore.css("display", "flex");  
 //     }
-// })
-// // works!
-
-function nextQues(event) {
-    event.preventDefault();
-    if (startPage) {
-        createQuestion(q1);
-        // allBtns.on("click", checkAnswer);
-        // answerBtn.on("click", answerMsg(q1));  
-    } else if ($("#answer-1")) {
-        createQuestion(q2)
-    }
-
-}
-
-
-
-
-function createQuestion(question) {
-    console.log("Create Question func working");
-    startPage.css("display", "none");
-    console.log("What's next?");
-    divEl.attr("class", "current-question");
-    if (question === q1) {
-        divEl.attr("id", "question-1");
-    } else if (question === q2) {
-        divEl.attr("id", "question-2");;
-    } else if (question === q3) {
-        divEl.attr("id", "question-3");;
-    }else if (question === q4) {
-        divEl.attr("id", "question-4");;
-    } else if (question === q5) {
-        divEl.attr("id", "question-5");;
-    } else {
-        return
-    }
-    questionList.append(divEl);
-    h3El.text(question.question);
-    divEl.append(h3El);
-    answer1.text(question.answer1);
-    answer1.attr({class:"answer-btn", id:"answer-1"});
-    divEl.append(answer1);
-    answer2.text(question.answer2);
-    answer2.attr({class:"answer-btn", id:"answer-2"});
-    divEl.append(answer2);
-    answer3.text(question.answer3);
-    answer3.attr({class:"answer-btn", id:"answer-3"});
-    divEl.append(answer3);
-    answer4.text(question.answer4);
-    answer4.attr({class:"answer-btn", id:"answer-4"});
-    divEl.append(answer4);
-    questionList.css("display", "flex");
-};
-
-// var allBtns = document.querySelectorAll(".answer-btn");
-
-function answerMsg(question) {
-    // for(i=1; i<5; i++) {
-    //     q1.children[i].addEventListener("click", function(event) {
-    //         if(event.currentTarget == document.getElementById("correct-answer")) {
-    //             console.log("correct answer");
-    //             return;
-    //         }else{
-    //             console.log("wrong answer");
-    //             return;
-    //         }
-    //     })
-    var allAnswers = [question.answer1, question.answer2, question.answer3, question.answer4];
-    for(i = 0; i < allAnswers.length; i++) {
-        allAnswers[i].addEventListener("click", function(event) {
-            if (question === q1) {
-                event.preventDefault();
-                if(event.currentTarget == q1.answer2) {
-                    console.log("correct answer");
-                }else{
-                    console.log("wrong answer");
-                }
-            }
-            
-        })
-    }
-    
-}
-/* <div class="current-display" id="answer-1">
-<h3>test 1</h3>
-<button class="answer-btn">Wrong</button>
-<button class="answer-btn">Wrong</button>
-<button class="answer-btn" id="correct-answer">Right</button>
-<button class="answer-btn">Wrong</button>
-</div> */
-// var questions = [q1, q2, q3, q4, q5];
-
-
-
-
-// function chooseAnswer() {
-    // var answerBtn = document.querySelector("#answer-btn");
-    // var wrongBtn = document.querySelector(".wrong-btn");
-
-//     answerBtn.addEventListener("click", function() { 
-//         answerConfirm.textContent = "Correct Answer";
-//         getSection[1].appendChild(answerConfirm);
-//         return
-//     });
-//     wrongBtn.addEventListener("click", function() { 
-//         answerConfirm.textContent = "Wrong Answer";
-//         getSection[1].appendChild(answerConfirm);
-//         return
-//     });
-// }
-// function displayFirstQuestion() {
-//     createH2.textContent = q1.question;
-//     getSection[1].appendChild(createH2);
-//     createBtnWrong1.textContent = q1.wrongAns1;
-//     getSection[1].appendChild(createBtnWrong1);
-//     createBtnWrong2.textContent = q1.wrongAns2;
-//     getSection[1].appendChild(createBtnWrong2);
-//     createBtnWrong3.textContent = q1.wrongAns2;
-//     getSection[1].appendChild(createBtnWrong3);
-//     createBtnAnswer.textContent = q1.rightAns;
-//     getSection[1].appendChild(createBtnAnswer);
-//     answerBtn.addEventListener("click", function() {
-//         console.log("it worked!");
-//     });
-   
+//     }, 1000)
 // }
 
-
-// function displayQuestion() {
-//     var questions = [q1, q2, q3, q4, q5];
-//     for(var i = 1; i < questions.length; i++){
-//         // chooseAnswer()
-//         createH2.textContent = questions[i].question;
-//         getSection[1].appendChild(createH2);
-//         createBtnWrong1.textContent = questions[i].wrongAns1;
-//         getSection[1].appendChild(createBtnWrong1);
-//         createBtnWrong2.textContent = questions[i].wrongAns2;
-//         getSection[1].appendChild(createBtnWrong2);
-//         createBtnWrong3.textContent = questions[i].wrongAns2;
-//         getSection[1].appendChild(createBtnWrong3);
-//         createBtnAnswer.textContent = questions[i].rightAns;
-//         getSection[1].appendChild(createBtnAnswer);
-//         // chooseAnswer();
-//         if(answerBtn || wrongBtn) {
-//             console.log("you hit a button")
-//         }
-//     }
-    
-// }
-
-
-
-// function nextQuestion() {
-//     var questions = [q1, q2, q3, q4, q5];
-//     for(i = 1; i < questions.length; i++){
-//         displayQuestion(questions[i]);
-        
-//     }
-// }
-
-// startQuiz.addEventListener("click", function() {
-//     startPage.setAttribute("style", "display: none;");
-//     displayFirstQuestion();
-// });    
-    
-
-
-
-// function displayQuestion() {
-//     for(var i = 0; i < questions.length; i++) {
-//         // if(i === 0){
-//         getSection[1].children[i].style.display = "flex";
-//         buttonEl.addEventListener("click", function() {
-//             if(buttonEl === document.querySelector(".correct-answer")) {
-//                 answerConfirm.textContent = "correct";
-//             }else{
-//                 answerConfirm.textContent = "incorrect";
-//             };
-//         });
-//     // getSection[1].children[i].style.display = "none";
-//     };
-    
-// }
-
-
-// function testFunction () {
-//     getSection[1].children[0].style.display = "flex";
-// }
-
-// q1 = document.getElementById("answer-1");
-// q2 = document.getElementById("answer-2");
-// q3 = document.getElementById("answer-3");
-// q4 = document.getElementById("answer-4");
-// q5 = document.getElementById("question-5");
-// var allSections = document.querySelectorAll(".current-display")
-// var allQuestions = document.querySelectorAll(".answer-btn")
-
-
-// // works!
-// function answerMsg() {
-//     // for(i=1; i<5; i++) {
-//     //     q1.children[i].addEventListener("click", function(event) {
-//     //         if(event.currentTarget == document.getElementById("correct-answer")) {
-//     //             console.log("correct answer");
-//     //             return;
-//     //         }else{
-//     //             console.log("wrong answer");
-//     //             return;
-//     //         }
-//     //     })
-//     for(i = 0; i < allQuestions.length; i++) {
-//         allQuestions[i].addEventListener("click", function(event) {
-//             if(event.currentTarget == document.getElementById("correct-answer")) {
-//                 console.log("correct answer");
-//                 nextQuestion()
-//             }else{
-//                 console.log("wrong answer");
-//             }
-//         })
-//     }
-    
-// }
-    
-// // var sec = seconds % 60 < 10 ? "0" + seconds % 60 : seconds % 60;
-// function nextQuestion() {
-//     for(i=1; i < allSections.length; i++) {
-//         allSections[i].setAttribute("style", "display: none;");
-//     }
-// }
-
-
-// function selectAnswer() {
-//     for(i=1; i < allSections.length; i++) {
-//         allSections[i].setAttribute("style", "display: flex;");
-//         answerMsg();
-//         nextQuestion();
-//         // allSections[i].setAttribute("style", "display: none;");
-//     }
-// }
-
-
-// // function showDisplay(event) {
-// //     // event.stopPropagation();
-// //     event.currentTarget.setAttribute("style","display: flex")
-// // };
-
-// // function hideDisplay(event) {
-// //     // event.stopPropagation();
-// //     event.currentTarget.setAttribute("style","display: none")
-// };
-
-// 2. create a nav-bar with highscores on the left, timer on the right.  This can be done in html file directly
-
-// 3. user is presented with start page on home page with a start button that beigins the quiz
-
-// 4. questions pages are generated (acceptabce criteria does not same questions have to be random).
-
-// 5. when user selects their answer (button) they are told if the answer is correct/incorrect and total score is updated.  If is not the last question, the next question is presented after a brief time delay.
-
-// 6. after last question, "all don" page is shown.  It confirms the final score and asked for user to submit their initials. 
-
-// 7. once initials are submitted, the high scores page is shown with each high score.  user with highest score shoul be at the top (sort by key-value pare with highest score at top).  Store via local storage
-
-// 8. on high score pg, user is given option to go back to start page or clear highscores.
+// checkCurrPage()

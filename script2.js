@@ -14,19 +14,22 @@ var question2 = $("#question-2");
 var question3 = $("#question-3");
 var question4 = $("#question-4");
 var question5 = $("#question-5");
+var questionList = $("question-list");
 var logScore = $("#log-score");
 var scoreDisplay = $("#quiz-score")
 var answrBtns = $(".answer-btn");
 var rightAnswer = $(".correct-answer");
 var checkAnswer = $(".check-answer");
-var currentPage = $("start");
+var currDisplay = $(".current-display")
+var currentPage = "start";
 
 
-var seconds = 180;
+var seconds = 120;
 var timerInterval = 0;
 var finalScore = 0
 
 startPage.css("display", "flex");
+// timer.text(seconds)
 
 // checks to see if currently on start page when button is clicked and if it is, changes start page display to none
 // and changes the Question #1 page display from "none" to "flex"
@@ -34,6 +37,61 @@ function renderTimer() {
     var sec = seconds % 60 < 10 ? "0" + seconds % 60 : seconds % 60;
     var min = Math.floor(seconds / 60);
     timer.text(`${min}:${sec}`);
+    if(seconds <= 0 || typeof seconds !== 'number') {
+        timer.text("0:00");
+        clearInterval(timerInterval);
+        // question1.css("display", "none");
+        // question2.css("display", "none");
+        // question3.css("display", "none");
+        // question4.css("display", "none");
+        // question5.css("display", "none");
+        // logScore.css("display", "flex");
+        // return;
+    }
+    //     clearInterval(timerInterval);
+    //     question1.css("display", "none");
+    //     question2.css("display", "none");
+    //     question3.css("display", "none");
+    //     question4.css("display", "none");
+    //     question5.css("display", "none");
+    //     logScore.css("display", "flex");
+
+        // var questionPage = ["question1", "question2", "question3", "question4", "question5"];
+        // var questionNum = [question1, question2, question3, question4, question5];
+        // for(var i = 0; i < questionPage.length; i++){
+        //     if (currentPage === "end-game" || currentPage === "start" || currentPage === "log-score"){
+        //         console.log("1st condition");
+        //         question1.css("display", "none");
+        //         question2.css("display", "none");
+        //         question3.css("display", "none");
+        //         question4.css("display", "none");
+        //         question5.css("display", "none");
+        //     // if(questionPage[i] === currentPage) {
+        //     //     questionNum[i].css("display", "none");
+        //     //     currentPage = "log-score";
+        //     //     console.log(questionNum[i])
+                
+        //     //     logScore.css("display", "flex");
+        //     //     alert("Time Ran Out!")
+        //     } else{
+        //         if(questionPage[i] === currentPage) {
+        //             console.log("2nd condition");
+        //             questionNum[i].css("display", "none");
+        //             currentPage = "log-score";
+        //             console.log(questionNum[i])
+                    
+        //             logScore.css("display", "flex");
+        //             alert("Time Ran Out!")
+        //         }
+        //     }
+        // }
+        
+    // }
+    // if(sec === 0 && min === 0){
+    //     question5.css("display", "none");
+    //     logScore.css("display", "flex");
+    //     alert("Time Ran Out!")
+    // }
 }
 
 function startTimer() {
@@ -41,11 +99,40 @@ function startTimer() {
     timerInterval = setInterval(function() {
         --seconds;
         renderTimer()
-        if(seconds <= 0) {
-            clearInterval(timerInterval);
-        }
+        // if(seconds <= 0) {
+        //     clearInterval(timerInterval);
+        //     var questionPage = ["question1", "question2", "question3", "question4", "question5"];
+        //     var questionNum = [question1, question2, question3, question4, question5];
+        //     for(var i = 0; i < questionPage.length; i++){
+        //         if(questionPage[i] === currentPage) {
+        //             questionNum[i].css("display", "none");
+        //             logScore.css("display", "flex");
+        //             alert("Time Ran Out!")
+        //         }
+        //     }
+            
+        // }
     }, 1000)
 }
+
+function hideQuestion() {
+    var questionPage = ["question1", "question2", "question3", "question4", "question5"];
+    var questionNum = [question1, question2, question3, question4, question5];
+    if (seconds <= 0) {
+        clearInterval(timerInterval);
+        timer.text("0:00");
+        for(var i = 0; i < questionPage.length; i++){
+            if(questionPage[i] === currentPage) {
+                currentPage = "log-score";
+                questionNum[i].css("display", "none");
+                logScore.css("display", "flex");
+                // alert("Time Ran Out!")
+            }
+        }
+    }
+    
+}
+
 
 startBtn.on("click", function(event) {
     event.preventDefault();
@@ -77,9 +164,9 @@ startBtn.on("click", function(event) {
 //     question2.css("display", "none");
 // }
 
-function subtractTime() {
+// function subtractTime() {
 
-}
+// }
 
 function correctAnswer(currentAnswer, callBack) {
     if (currentAnswer.classList.contains("correct-answer")) {
@@ -101,40 +188,100 @@ function correctAnswer(currentAnswer, callBack) {
 
 // Function check the current value of "currentAnswer" then changes the display of the current page to none
 // and displays the next page after a button click
+
+// function nextQuestion (event) {
+//     event.preventDefault();
+//     var currentAnswer = event.target;
+//     console.log(currentAnswer);
+//     var questionPage = ["question1", "question2", "question3", "question4", "question5"];
+//     var questionNum = [question1, question2, question3, question4, question5];
+//     for(var i = 0; i < questionPage.length; i++){
+//         if(seconds <= 0) {
+//             clearInterval(timerInterval);
+//             currentPage = "log-score";
+//             questionNum[i].css("display", "none");
+//             logScore.css("display", "flex");
+//             alert("Time Ran Out!");
+//             // if(questionPage[i] === currentPage) {
+//             //     questionNum[i].css("display", "none");
+//             //     logScore.css("display", "flex");
+//             //     alert("Time Ran Out!")
+//             //     }
+//             // } 
+//         } else {
+//             event.preventDefault();
+//             currentPage = questionPage[i];
+//             correctAnswer(currentAnswer, function() {
+//                 questionNum[i].css("display", "none");
+//                 questionNum[i+1].css("display", "flex");
+//             });
+//         }   
+//     }
+// }
+
 function nextQuestion (event) {
     event.preventDefault();
     var currentAnswer = event.target;
     console.log(currentAnswer);
+
+    // if(seconds <= 0 || typeof seconds !== 'number') {
+    //     timer.text("0:00");
+    //     clearInterval(timerInterval);
+    //     question1.css("display", "none");
+    //     question2.css("display", "none");
+    //     question3.css("display", "none");
+    //     question4.css("display", "none");
+    //     question5.css("display", "none");
+    //     logScore.css("display", "flex");
+
     if(currentPage === "question1") {
         currentPage = "question2";
         correctAnswer(currentAnswer, function() {
             question1.css("display", "none");
             question2.css("display", "flex");
         });
+        // hideQuestion();
+        
         // question1.css("display", "none");
         // question2.css("display", "flex");
     } else if(currentPage === "question2") {
         currentPage = "question3";
+        
         correctAnswer(currentAnswer, function(){
             question2.css("display", "none");
             question3.css("display", "flex");
         });
+        // hideQuestion();
+        // if(seconds <= 0){
+        //     hideQuestion()
+        // }
         // question2.css("display", "none");
         // question3.css("display", "flex");
     } else if(currentPage === "question3") {
         currentPage = "question4";
+        
         correctAnswer(currentAnswer, function(){
             question3.css("display", "none");
             question4.css("display", "flex");
         });
+        // hideQuestion();
+        // if(seconds <= 0){
+        //     hideQuestion()
+        // }
     }else if(currentPage === "question4") {
         currentPage = "question5";
+        
         correctAnswer(currentAnswer, function(){
             question4.css("display", "none");
             question5.css("display", "flex");
         });
+        // hideQuestion();
+        // if(seconds <= 0){
+        //     hideQuestion()
+        // }
     } else if(currentPage === "question5") {
         currentPage = "log-score";
+        
         correctAnswer(currentAnswer, function(){
             question5.css("display", "none");
             logScore.css("display", "flex");
@@ -147,28 +294,32 @@ function nextQuestion (event) {
             // seconds = 0;
             // renderTimer();
         });
+        // hideQuestion();
+    } else {
+
     }
 };
+
 
 for(var i = 0; i < answrBtns.length; i++) {
     answrBtns[i].addEventListener("click", nextQuestion)
 };
 
 
-function logScore(event) {
-    event.preventDefault();
-    var initials = event.target;
-    if(currentPage === "log-score");
-}
+// function logScore(event) {
+//     event.preventDefault();
+//     var initials = event.target;
+//     if(currentPage === "log-score");
+// }
 
 
 // WHEN all questions are answered or the timer reaches 0
 // THEN the game is over
-function endQuiz() {
-    if(seconds === 0 || (currentPage === "log-score")) {
-        console.log("Game over")
-    }
-}
+// function endQuiz() {
+//     if(seconds === 0 || (currentPage === "log-score")) {
+//         console.log("Game over")
+//     }
+// }
 
 
 
@@ -187,7 +338,7 @@ var highScores = $("#high-scores");
 var showScores = document.querySelector("#show-scores")
 // var initials = document.querySelector("#initials"); chenged value
 // var todoCountSpan = document.querySelector("#todo-count");
-var totEntry = document.querySelector("#total-entries")
+// var totEntry = document.querySelector("#total-entries")
 
 
 var allScores = [];
@@ -196,9 +347,9 @@ function renderHighScore() {
     // currentPage = "end-game";
     // logScore.css("display", "none");
     // highScores.css("display", "flex");
-
+    showScores.style.display = "flex";
     showScores.innerHTML = "";
-    totEntry.textContent = allScores.length;
+    // totEntry.textContent = allScores.length;
 
     for (var i = 0; i < allScores.length; i++) {
         var score = allScores[i];
@@ -254,6 +405,7 @@ subScoreBtn.addEventListener("click", function(event){
     currentPage = "end-game";
     logScore.css("display", "none");
     highScores.css("display", "flex");
+    showScores.style.display = "flex";
 
     var highScore = {
         initials: user.value,
@@ -293,4 +445,37 @@ initDisplay();
 //     }
 // }
 // var scoreArray = [];
+
+// var onlyScores = [];
+
+// for (var i =0; i < allScores.length; i++) {
+//     onlyScores.push(allScores[i][1]);
+// };
+
+// onlyScores.sort((a, b) => (b-a));
+var restartQuizBtn = document.getElementById("restart-quiz");
+var clearScoreBtn = document.getElementById("clear-scores");
+
+restartQuizBtn.addEventListener("click", function() {
+    currentPage = "start"; 
+    var questionPage = ["question1", "question2", "question3", "question4", "question5"];
+    var questionNum = [question1, question2, question3, question4, question5];
+        for(var i = 0; i < questionPage.length; i++){
+            if(questionPage[i] === currentPage) {
+                questionNum[i].css("display", "none");
+            }
+        }
+    // logScore.css("display", "none");
+    highScores.css("display", "none");
+    startPage.css("display", "flex");
+    seconds = 120;
+    finalScore = 0;
+});
+
+clearScoreBtn.addEventListener("click", function(){
+    localStorage.removeItem("allScores");
+    allScores = [];
+    showScores.style.display = "none";
+    
+});
 
