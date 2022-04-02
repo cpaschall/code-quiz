@@ -38,17 +38,8 @@ function hideAllDisplay() {
     for(var i=0; i < allDisplays.length; i++) {
         allDisplays[i].css("display", "none")
     }
-    // startPage.css("display", "none");
-    // logScore.css("display", "none");
-    // question1.css("display", "none");
-    // question2.css("display", "none");
-    // question3.css("display", "none");
-    // question4.css("display", "none");
-    // question5.css("display", "none");
     highScores.css("display", "flex")
 }
-
-
 
 startPage.css("display", "flex");
 
@@ -66,29 +57,23 @@ function renderTimer() {
 
 function startTimer() {
     clearInterval(timerInterval);
+
     timerInterval = setInterval(function() {
         --seconds;
         renderTimer()
     if(seconds <= 0){
         alert("Time is up!");
-        // for(var i=0; i < allDisplays.length; i++) {
-        //     console.log("time's up!")
-        //     allDisplays[i].css("display", "none")
-        // }
         currentPage = "log-score";
-        // if(currentPage !== "log-score") {
         for(var i=0; i < allDisplays.length; i++) {
             console.log("time's up!")
             allDisplays[i].css("display", "none");
         }
-        // }
         logScore.css("display", "flex");  
     }
     }, 1000)
 }
 
-function checkCurrPage(){
-    
+function checkCurrPage(){   
     if (seconds <= 0){
         for(var i = 0; i < questionPage.length; i++){
             if(questionPage[i] === currentPage) {
@@ -99,39 +84,6 @@ function checkCurrPage(){
         }
     }
 }
-
-// checkCurrPage();
-// function hideQuestion() {
-//     var questionPage = ["question1", "question2", "question3", "question4", "question5"];
-//     var questionNum = [question1, question2, question3, question4, question5];
-//     if (seconds <= 0) {
-//         clearInterval(timerInterval);
-//         timer.text("0:00");
-//         for(var i = 0; i < questionPage.length; i++){
-//             if(questionPage[i] === currentPage) {
-//                 currentPage = "log-score";
-//                 questionNum[i].css("display", "none");
-//                 logScore.css("display", "flex");
-//             }
-//         }
-//     }
-    
-// }
-
-// startBtn.on("click", function(event) {
-//     event.preventDefault();
-//     var currBtn = event.target;
-//     console.log(currBtn);
-//     if (currentPage === "start") {
-//         currentPage = "question1";
-//         startPage.css("display", "none");
-//         startTimer();
-//         question1.css("display", "flex");
-//     } else{
-//         currentPage = "start";
-//         startPage.css("display", "flex")
-//     }
-// })
 
 function correctAnswer(currentAnswer, callBack) {
     if (currentAnswer.classList.contains("correct-answer")) {
@@ -151,37 +103,6 @@ function correctAnswer(currentAnswer, callBack) {
 // Function check the current value of "currentAnswer" then changes the display of the current page to none
 // and displays the next page after a button click
 
-// function nextQuestion (event) {
-//     event.preventDefault();
-//     var currentAnswer = event.target;
-//     console.log(currentAnswer);
-//     var questionPage = ["question1", "question2", "question3", "question4", "question5"];
-//     var questionNum = [question1, question2, question3, question4, question5];
-//     for(var i = 0; i < questionPage.length; i++){
-//         if(seconds <= 0) {
-//             clearInterval(timerInterval);
-//             logScore.css("display", "flex");
-//             currentPage = "log-score";
-//             questionNum[i].css("display", "none");
-//             logScore.css("display", "flex");
-//             alert("Time Ran Out!");
-//             // if(questionPage[i] === currentPage) {
-//             questionNum[i].css("display", "none");
-//             // logScore.css("display", "flex");
-//             alert("Time Ran Out!")
-//         //     }
-//         //     // } 
-//         } else {
-//             event.preventDefault();
-//             currentPage = questionPage[i];
-//             correctAnswer(currentAnswer, function() {
-//                 questionNum[i].css("display", "none");
-//                 questionNum[i+1].css("display", "flex");
-//             });
-//         }   
-//     }
-// }
-
 function nextQuestion(event) {
     event.preventDefault();
     var currentAnswer = event.target;
@@ -192,66 +113,45 @@ function nextQuestion(event) {
         correctAnswer(currentAnswer, function() {
             question1.css("display", "none");
             question2.css("display", "flex");
+            isTimeUp();
         });
-        
-        // if (seconds <= 0){
-        //     timer.text("0:00");
-        //     clearInterval(timerInterval);
-        //     question1.css("display", "none");
-        //     logScore.css("display", "flex");
-        // }
-    } else if(currentPage === "question2") {
-        
-        currentPage = "question3";
-        
+    } else if(currentPage === "question2") {      
+        currentPage = "question3";  
         correctAnswer(currentAnswer, function(){
             question2.css("display", "none");
             question3.css("display", "flex");
-        })
-        
-
-    } else if(currentPage === "question3") {
-        
-        currentPage = "question4";
-        
+            isTimeUp();
+        })   
+    } else if(currentPage === "question3") {    
+        currentPage = "question4";   
         correctAnswer(currentAnswer, function(){
             question3.css("display", "none");
             question4.css("display", "flex");
-        })
-        
+            isTimeUp();
+        })      
     } else if(currentPage === "question4") {
-
-        currentPage = "question5";
-        
+        currentPage = "question5";   
         correctAnswer(currentAnswer, function(){
             question4.css("display", "none");
             question5.css("display", "flex");
+            isTimeUp();
         })
     } else if(currentPage === "question5") {
-
-        currentPage = "log-score";
-        
+        currentPage = "log-score";  
         correctAnswer(currentAnswer, function(){
             question5.css("display", "none");
             logScore.css("display", "flex");
+            isTimeUp();
             scoreDisplay.text(`Final Score: ${finalScore}`);
             console.log(finalScore);
             clearInterval(timerInterval);
         });
-
-    // } else {
-
     }
 };
 
 for(var i = 0; i < answrBtns.length; i++) {
     answrBtns[i].addEventListener("click", nextQuestion)
 };
-
-// WHEN the game is over
-// THEN I can save my initials and my score
-
-
 
 var allScores = [];
 
@@ -281,12 +181,10 @@ function storedScores() {
 
 subScoreBtn.addEventListener("click", function(event){
     event.preventDefault();
-
     currentPage = "end-game";
     logScore.css("display", "none");
     highScores.css("display", "flex");
     showScores.style.display = "flex";
-
     var highScore = {
         initials: user.value,
         score: finalScore,
@@ -295,10 +193,8 @@ subScoreBtn.addEventListener("click", function(event){
     if (user === "") {
         return;
     }
-
     allScores.push([highScore.initials, highScore.score]);
-    user.value="";
-  
+    user.value="";  
     storedScores();
     renderHighScore();
 })
@@ -310,7 +206,6 @@ var clearScoreBtn = document.getElementById("clear-scores");
 
 restartQuizBtn.addEventListener("click", function() {
     currentPage = "start"; 
-
     var questionPage = ["question1", "question2", "question3", "question4", "question5"];
     var questionNum = [question1, question2, question3, question4, question5];
         for(var i = 0; i < questionPage.length; i++){
@@ -330,15 +225,6 @@ clearScoreBtn.addEventListener("click", function(){
     showScores.style.display = "none";
 });
 
-// anchorEl.on("click", function(){
-//     for(var i=0; i < allDisplays.length; i++) {
-//         allDisplays[i].css("display", "none")
-//     }
-//     highScores.css("display", "flex")
-// })
-
-// anchorEl.on("click", hideAllDisplay)
-
 startBtn.on("click", function(event) {
     event.preventDefault();
     var currBtn = event.target;
@@ -354,20 +240,12 @@ startBtn.on("click", function(event) {
     }
 })
 
-// function startTimer() {
-//     clearInterval(timerInterval);
-//     timerInterval = setInterval(function() {
-//         --seconds;
-//         renderTimer()
-//     if(seconds <= 0){
-//         alert("Time is up!");
-//         for(var i=0; i < allDisplays.length; i++) {
-//             console.log("time's up!")
-//             allDisplays[i].css("display", "none")
-//         }
-//         logScore.css("display", "flex");  
-//     }
-//     }, 1000)
-// }
-
-// checkCurrPage()
+function isTimeUp() {
+    if (currentPage === "log-score"){
+    question1.css("display", "none");
+    question2.css("display", "none");
+    question3.css("display", "none");
+    question4.css("display", "none");
+    question5.css("display", "none");
+    }
+}
