@@ -1,7 +1,3 @@
-// GIVEN I am taking a code quiz
-// WHEN I click the start button
-// THEN a timer starts and I am presented with a question
-
 var timer = $("#timer");
 var startPage = $("#start-page");
 var startBtn = $("#start-quiz");
@@ -18,15 +14,14 @@ var rightAnswer = $(".correct-answer");
 var checkAnswer = $(".check-answer");
 var currDisplay = $(".current-display")
 var currentPage = "start";
-var anchorEl = $("a")
+var currScore = $("#current-score")
 var user = document.querySelector("#usr-init");
 var subScoreBtn = document.querySelector("#submit-score");
 var scoreForm = document.querySelector("#score-form");
 var highScores = $("#high-scores");
 var showScores = document.querySelector("#show-scores")
 
-
-var seconds = 10;
+var seconds = 120;
 var timerInterval = 0;
 var finalScore = 0
 
@@ -34,17 +29,15 @@ var allDisplays = [startPage, question1, question2, question3, question4, questi
 var questionPage = ["question1", "question2", "question3", "question4", "question5"];
 var questionNum = [question1, question2, question3, question4, question5]
 
-function hideAllDisplay() {
-    for(var i=0; i < allDisplays.length; i++) {
-        allDisplays[i].css("display", "none")
-    }
-    highScores.css("display", "flex")
-}
-
-startPage.css("display", "flex");
+// GIVEN I am taking a code quiz
+// WHEN I click the start button
+// THEN a timer starts and I am presented with a question
 
 // checks to see if currently on start page when button is clicked and if it is, changes start page display to none
 // and changes the Question #1 page display from "none" to "flex"
+
+startPage.css("display", "flex");
+
 function renderTimer() {
     var sec = seconds % 60 < 10 ? "0" + seconds % 60 : seconds % 60;
     var min = Math.floor(seconds / 60);
@@ -55,6 +48,7 @@ function renderTimer() {
     }
 }
 
+currScore.text(`${finalScore}`);
 function startTimer() {
     clearInterval(timerInterval);
 
@@ -85,11 +79,15 @@ function checkCurrPage(){
     }
 }
 
+// WHEN I answer a question incorrectly
+// THEN time is subtracted from the clock
+
 function correctAnswer(currentAnswer, callBack) {
     if (currentAnswer.classList.contains("correct-answer")) {
         console.log("correct answer");
         checkAnswer.text("Correct Answer");
-        finalScore++;
+        finalScore += 10;
+        currScore.text(`${finalScore}`);
     }else{
         checkAnswer.text("Wrong answer");
         seconds -= 5;
@@ -99,6 +97,9 @@ function correctAnswer(currentAnswer, callBack) {
         callBack()
     }, 1000);
 }
+
+// WHEN all questions are answered or the timer reaches 0
+// THEN the game is over
 
 // Function check the current value of "currentAnswer" then changes the display of the current page to none
 // and displays the next page after a button click
@@ -179,6 +180,9 @@ function storedScores() {
     localStorage.setItem("allScores", JSON.stringify(allScores))
 }
 
+// WHEN the game is over
+// THEN I can save my initials and my score
+
 subScoreBtn.addEventListener("click", function(event){
     event.preventDefault();
     currentPage = "end-game";
@@ -215,8 +219,11 @@ restartQuizBtn.addEventListener("click", function() {
         }
     highScores.css("display", "none");
     startPage.css("display", "flex");
-    seconds = 10;
+    seconds = 120;
+    timer.text("2:00");
     finalScore = 0;
+    currScore.text("0");
+
 });
 
 clearScoreBtn.addEventListener("click", function(){

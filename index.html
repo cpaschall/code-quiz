@@ -11,57 +11,57 @@
 <body>
     <header>
         <nav>
-            <p><a href="">High Scores</a></p>
+            <p>Score: <span id="current-score">0</span></p>
             <p>Timer: <span id="timer">2:00</span></p>
         </nav>
     </header>
     <main>
         <section class="current-display" id="start-page">
             <h1>Coding Quiz</h1>
-            <p></p>
+            <p>How well do you think you know about programming languages?  Try this quiz to find out!</p>
             <button id="start-quiz" type="button" class="btn btn-info">Start Quiz</button>
             
         </section>
         <section id="question-list">
 
             <div class="current-display all-questions" id="question-1">
-                <h3>test 1</h3>
-                <button type="button" class="btn btn-primary answer-btn">Wrong</button>
-                <button type="button" class="btn btn-primary answer-btn">Wrong</button>
-                <button type="button" class="btn btn-primary answer-btn correct-answer">Right</button>
-                <button type="button" class="btn btn-primary answer-btn">Wrong</button>
+                <h3>_________ refers to sections of code that have to be included in many places with little or no alteration.</h3>
+                <button type="button" class="btn btn-primary answer-btn">Top-code</button>
+                <button type="button" class="btn btn-primary answer-btn">Hotplate</button>
+                <button type="button" class="btn btn-primary answer-btn correct-answer">Boilerplate</button>
+                <button type="button" class="btn btn-primary answer-btn">Header</button>
                 <p class="check-answer" id="q1-check"></p>
             </div>
             <div class="current-display all-questions" id="question-2">
-                <h3>test 2</h3>
-                <button type="button" class="btn btn-primary answer-btn">Wrong</button>
-                <button type="button" class="btn btn-primary answer-btn">Wrong</button>
-                <button type="button" class="btn btn-primary answer-btn">Wrong</button>
-                <button type="button" class="btn btn-primary answer-btn correct-answer">Right</button>
+                <h3>_________ is the language we use to style an HTML document.</h3>
+                <button type="button" class="btn btn-primary answer-btn">Python</button>
+                <button type="button" class="btn btn-primary answer-btn">Javascript</button>
+                <button type="button" class="btn btn-primary answer-btn">HTML Stylez</button>
+                <button type="button" class="btn btn-primary answer-btn correct-answer">Cascading Style Sheets</button>
                 <p class="check-answer" id="q2-check"></p>
             </div>
             <div class="current-display all-questions" id="question-3">
-                <h3>test 3</h3>
-                <button type="button" class="btn btn-primary answer-btn">Wrong</button>
-                <button type="button" class="btn btn-primary answer-btn correct-answer">Right</button>
-                <button type="button" class="btn btn-primary answer-btn">Wrong</button>
-                <button type="button" class="btn btn-primary answer-btn">Wrong</button>
+                <h3>The _____________ method of the EventTarget interface sets up a function that will be called whenever the specified event is delivered to the target.</h3>
+                <button type="button" class="btn btn-primary answer-btn">target()</button>
+                <button type="button" class="btn btn-primary answer-btn correct-answer">addEventListener()</button>
+                <button type="button" class="btn btn-primary answer-btn">sort()</button>
+                <button type="button" class="btn btn-primary answer-btn">targetEvent()</button>
                 <p class="check-answer" id="q3-check"></p>
             </div>
             <div class="current-display all-questions" id="question-4">
-                <h3>test 4</h3>
-                <button type="button" class="btn btn-primary answer-btn correct-answer">Right</button>
-                <button type="button" class="btn btn-primary answer-btn">Wrong</button>
-                <button type="button" class="btn btn-primary answer-btn">Wrong</button>
-                <button type="button" class="btn btn-primary answer-btn">Wrong</button>
+                <h3>In Javascript, the ________ operator returns a string indicating the type of the unevaluated operand.</h3>
+                <button type="button" class="btn btn-primary answer-btn correct-answer">typeof</button>
+                <button type="button" class="btn btn-primary answer-btn">indicateVal</button>
+                <button type="button" class="btn btn-primary answer-btn">boolean</button>
+                <button type="button" class="btn btn-primary answer-btn">console.log</button>
                 <p class="check-answer" id="q5-check"></p>
             </div>
             <div class="current-display all-questions" id="question-5">
-                <h3>test 5</h3>
-                <button type="button" class="btn btn-primary answer-btn">Wrong</button>
-                <button type="button" class="btn btn-primary answer-btn">Wrong</button>
-                <button type="button" class="btn btn-primary answer-btn">Wrong</button>
-                <button type="button" class="btn btn-primary answer-btn correct-answer">Right</button>
+                <h3>A one-dimensional layout method for arranging items in rows or columns is known as __________. </h3>
+                <button type="button" class="btn btn-primary answer-btn">Columnization</button>
+                <button type="button" class="btn btn-primary answer-btn">Flex Froggy</button>
+                <button type="button" class="btn btn-primary answer-btn">Justify-Content</button>
+                <button type="button" class="btn btn-primary answer-btn correct-answer">Flexbox</button>
                 <p class="check-answer" id="q5-check"></p>
             </div>
         </section>
@@ -69,11 +69,10 @@
             <div class="current-display" id="log-score">
                 <h1>Quiz Complete</h1>
                 <h3 id="quiz-score"></h3>
-                <p>Enter your initials below to log your score</p>
                 <form id="score-form" method="POST">
-                    <label for="usr-init">Enter Initials</label>
-                    <input type="text" name="usr-init" id="usr-init">
-                    <button id="submit-score">Submit Score</button>
+                    <label for="usr-init">Enter your initials below to log your score</label>
+                    <input type="text" name="usr-init" id="usr-init" placeholder="Initials" required>
+                    <button id="submit-score" class="btn btn-info">Submit Score</button>
                 </form>
             </div>
 
@@ -83,8 +82,11 @@
                 <h1>High Scores</h1>
                 <ul id="show-scores">
                 </ul>
-                <button id="restart-quiz">Start Over</button>
-                <button id="clear-scores">Clear High Scores</button>
+                <div id="#end-quiz-btn">
+                    <button id="restart-quiz" class="btn btn-info">Start Over</button>
+                    <button id="clear-scores" class="btn btn-info">Clear High Scores</button>
+                </div>
+                
             </div>
         </section>
     </main>
