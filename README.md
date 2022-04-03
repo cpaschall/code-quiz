@@ -23,4 +23,4 @@ THEN I can save my initials and my score
 ## Final Product
 [My Code Quiz](https://cpaschall.github.io/code-quiz)
 
-![Code Quiz in Action](.\assets\images\codeQuiz.gif)
+![Code Quiz in Action](./assets/images/codeQuiz.gif)
